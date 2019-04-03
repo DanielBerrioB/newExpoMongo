@@ -1,15 +1,24 @@
 import React from "react";
 import axios from "axios";
 class Productos extends React.Component {
+  
+  
+
   constructor(props) {
     super(props);
-    // Don't call this.setState() here!
-    this.state = { counter: 0 };
-    //this.getAll2();
+    //this.state = { counter: 0 };
   }
+  
 
   render() {
-    return <div id="tasksText" />;
+    return (
+      <div>
+        {(this.props.lista).map(element => (
+        console.log(element.id)))}
+      </div>
+
+
+    );
   }
 }
 

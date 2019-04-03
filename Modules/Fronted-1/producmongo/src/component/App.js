@@ -4,10 +4,35 @@ import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
 import Productos from "./Productos";
+import axios from 'axios'
 import Header2 from "./Header2";
 
 class App extends React.Component {
+
+  state ={
+      lista: []
+  }
+
+  componentDidMount(){
+    this.getAll();
+  }
+
+  getAll =()=>{
+    var url = 'http://localhost:4000/main/'
+    axios.get(url).then(response => {
+        this.setState({
+            lista: response.data
+        })
+        
+    }).catch(error => {
+        console.log(error);
+    })
+    
+  }
+
   render() {
+    
+
     return (
       <div className="contenedor">
         <Header />
@@ -32,7 +57,9 @@ class App extends React.Component {
           </div>
         </div>
 
-        <Productos />
+        <Productos
+            lista = {this.state.lista}
+        />
       </div>
     );
   }
