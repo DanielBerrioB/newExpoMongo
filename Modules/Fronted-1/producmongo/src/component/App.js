@@ -57,9 +57,16 @@ class App extends React.Component {
           </div>
         </div>
 
-        <Productos
+        <br/>
+
+        <div className="contenedor">
+        <Header2 titulo="Productos" />
+        <div className='contenedor-formulario'>
+        <Productos 
             lista = {this.state.lista}
         />
+        </div>
+        </div>
       </div>
     );
   }
