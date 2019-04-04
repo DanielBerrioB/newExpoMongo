@@ -37,16 +37,28 @@ app.post("/main/", (req, res) => {
   MongoClient.connect(url, (err, db) => {
     if (err) throw err; //Throws an error if it's necessary
     var dbo = db.db("nuevoDb");
-    dbo.collection("productos").insert(body); //The new document is inserted into the DB
     dbo
       .collection("productos")
       .find()
-      .toArray(function(err, result) {
+      .toArray((err, result) => {
         if (err) throw err;
-        res.status(201).send(result);
+        var element = result.find(i => i.id === body.id);
+        if (!element) {
+          dbo.collection("productos").insert(body); //The new document is inserted into the DB
+          dbo
+            .collection("productos")
+            .find()
+            .toArray(function(err, value) {
+              if (err) throw err;
+              res.status(201).send(value);
+            });
+          // perform actions on the collection object
+          db.close();
+        } else {
+          res.status(404).send({ message: "The element already exists" });
+          db.close();
+        }
       });
-    // perform actions on the collection object
-    db.close();
   });
 });
 
@@ -80,7 +92,7 @@ app.put("/main/:id", (req, res) => {
                 });
             });
         } else {
-          res.status(400).send({ message: "Producto no encontrado" });
+          res.status(400).send({ message: "Not found" });
           db.close();
         }
       });
@@ -117,7 +129,7 @@ app.delete("/main/:id", (req, res) => {
           });
         } else {
           res.status(400).send({
-            message: "No se encontró el elemento a eliminar"
+            message: "Not found"
           });
           db.close();
         }

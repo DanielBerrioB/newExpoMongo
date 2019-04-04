@@ -24,19 +24,26 @@ class Form2 extends React.Component {
         valor: this.valorRef.current.value,
         stock: this.stockRef.current.value
       };
-      var url = `http://localhost:4000/main/${data.id}`;
-      console.log("Modificar tarea TAREA");
-      axios
-        .put(url, data)
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .then(() => {
-          // getAll2()
-        });
+      if (data.id && data.nombre && data.valor && data.stock) {
+        var url = `http://localhost:4000/main/${data.id}`;
+        console.log("Modificar tarea TAREA");
+        axios
+          .put(url, data)
+          .then(response => {
+            this.props.change();
+          })
+          .catch(error => {
+            console.log(error);
+          })
+          .then(() => {
+            this.idRef.current.value = "";
+            this.nombreRef.current.value = "";
+            this.valorRef.current.value = "";
+            this.stockRef.current.value = "";
+          });
+      } else {
+        alert("No has ingresado los campos requeridos");
+      }
     } else {
       this.getElements().then(response => {
         if (response) {

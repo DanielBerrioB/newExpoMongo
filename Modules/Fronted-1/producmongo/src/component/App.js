@@ -4,48 +4,47 @@ import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
 import Productos from "./Productos";
-import axios from 'axios'
+import axios from "axios";
 import Header2 from "./Header2";
 
 class App extends React.Component {
+  state = {
+    lista: [],
+    cambio: false
+  };
 
-  state ={
-      lista: []
-  }
-
-  componentDidMount(){
+  componentDidMount() {
     this.getAll();
   }
 
-  getAll =()=>{
-    var url = 'http://localhost:4000/main/'
-    axios.get(url).then(response => {
+  getAll = () => {
+    var url = "http://localhost:4000/main/";
+    axios
+      .get(url)
+      .then(response => {
         this.setState({
-            lista: response.data
-        })
-        
-    }).catch(error => {
+          lista: response.data
+        });
+      })
+      .catch(error => {
         console.log(error);
-    })
-    
-  }
+      });
+  };
 
   render() {
-    
-
     return (
       <div className="contenedor">
         <Header />
         <Header2 titulo="Agregar producto" />
         <div className="contenedor-formulario">
-          <Form1 />
+          <Form1 change={this.getAll} />
         </div>
 
         <br />
         <div className="contenedor">
           <Header2 titulo="Editar producto" />
           <div className="contenedor-formulario">
-            <Form2 />
+            <Form2 change={this.getAll} />
           </div>
         </div>
 
@@ -53,19 +52,17 @@ class App extends React.Component {
         <div className="contenedor">
           <Header2 titulo="Eliminar producto" />
           <div className="contenedor-formulario">
-            <Form3 />
+            <Form3 change={this.getAll} />
           </div>
         </div>
 
-        <br/>
+        <br />
 
         <div className="contenedor">
-        <Header2 titulo="Productos" />
-        <div className='contenedor-formulario'>
-        <Productos 
-            lista = {this.state.lista}
-        />
-        </div>
+          <Header2 titulo="Productos" />
+          <div className="contenedor-formulario">
+            <Productos lista={this.state.lista} />
+          </div>
         </div>
       </div>
     );

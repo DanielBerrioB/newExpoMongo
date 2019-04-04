@@ -16,19 +16,26 @@ class Form1 extends React.Component {
       valor: this.valorRef.current.value,
       stock: this.stockRef.current.value
     };
-    console.log(data);
-    console.log("AGREGAR TAREA");
-    axios
-      .post(url, data)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-      .then(() => {
-        //this.getAll2();
-      });
+    if (data.id && data.nombre && data.valor && data.stock) {
+      console.log(data);
+      console.log("AGREGAR TAREA");
+      axios
+        .post(url, data)
+        .then(response => {
+          this.props.change(); //Actualiza el metodo para actualizar
+        })
+        .catch(error => {
+          alert("Quizas el elemento ya se encuentra agregado");
+        })
+        .then(() => {
+          this.idRef.current.value = "";
+          this.nombreRef.current.value = "";
+          this.valorRef.current.value = "";
+          this.stockRef.current.value = "";
+        });
+    } else {
+      alert("Te faltan campos por llenar");
+    }
   };
 
   render() {

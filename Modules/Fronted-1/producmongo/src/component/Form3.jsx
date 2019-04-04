@@ -10,19 +10,21 @@ class Form3 extends React.Component {
     var data = {
       id: this.idRef.current.value
     };
-    var url = `http://localhost:4000/main/${data.id}`;
-    console.log("ELIMINAR  TAREA");
-    axios
-      .delete(url, data)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      })
-      .then(() => {
-        // getAll2()
-      });
+    if (data.id) {
+      var url = `http://localhost:4000/main/${data.id}`;
+      console.log("ELIMINAR  TAREA");
+      axios
+        .delete(url, data)
+        .then(response => {
+          this.props.change();
+          this.idRef.current.value = "";
+        })
+        .catch(error => {
+          alert("No se encuentra el producto con el id establecido");
+        });
+    } else {
+      alert("No has ingresado el id");
+    }
   };
 
   render() {
